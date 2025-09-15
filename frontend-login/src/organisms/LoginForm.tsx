@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form"
 import CustomFormInput from "@/atoms/CustomFormInput"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
-import { verifyToken } from "@/utils/utils"
+import { verifyToken } from "../app/api/utils/utils"
 import Cookies from "js-cookie"
 import ITryLoginResponse from "@/interfaces/ITryLoginResponse"
 import { tryLogin } from "@/services/Services"
@@ -46,14 +46,7 @@ export function LoginForm() {
         return
       }
 
-      // Verify the JWT token
-      const data = response.data;
-      const payload = await verifyToken(data?.token)
-      if (!payload) {
-        setError("Invalid token received")
-        return
-      }
-
+      if (response.data) Cookies.set('token', response.data.token);
       router.push("/profile");
     } catch (error) {
       setError("Network error. Please try again.")
@@ -62,7 +55,7 @@ export function LoginForm() {
   }
 
   const routeToSigIn = () => {
-    router.push("/signin");
+    router.push("/signup");
   };
 
   return (
@@ -97,7 +90,7 @@ export function LoginForm() {
 
             <div className="flex-row justify-center-safe row-auto align-middle">
                 <Button className="bg-amber-200 hover:bg-amber-300 active:bg-amber-400 rounded-2xl m-2" type="button" onClick={() => routeToSigIn()}>Sign up</Button>
-                <Button className="bg-blue-200 hover:bg-blue-300 active:bg-blue-400 rounded-2xl m-2" type="submit">Submit</Button>
+                <Button className="bg-blue-200 hover:bg-blue-300 active:bg-blue-400 rounded-2xl m-2" type="submit">Login</Button>
             </div>
           </div>
         </form>

@@ -9,6 +9,7 @@ import CustomFormInput from "@/atoms/CustomFormInput"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { trySignup } from "@/services/Services"
+import { Label } from "@/components/ui/label"
 
 const signupSchema = z.object({
   username: z.string().min(2, {
@@ -118,8 +119,9 @@ export function SignupForm() {
             <div
               className="justify-items-center flex-row"
             >
-                <Button className="bg-amber-200 hover:bg-amber-300 active:bg-amber-400 rounded-2xl m-2" type="button" onClick={() => routeToLogin()}>Login</Button>
-                <Button className="bg-blue-200 hover:bg-blue-300 active:bg-blue-400 rounded-2xl m-2" type="submit">Submit</Button>
+              {error && <Label>Erro: {error}</Label>}
+              <Button className="bg-amber-200 hover:bg-amber-300 active:bg-amber-400 rounded-2xl m-2" type="button" onClick={() => routeToLogin()}>Login</Button>
+              <Button className="bg-blue-200 hover:bg-blue-300 active:bg-blue-400 rounded-2xl m-2" type="submit">Sign Up</Button>
             </div>
           </div>
         </form>
