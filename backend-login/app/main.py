@@ -1,12 +1,16 @@
-﻿from fastapi import FastAPI, HTTPException
+﻿from dotenv import load_dotenv
+load_dotenv()
+
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from .schemas import SignupRequest, LoginRequest, LoginResponse, MessageResponse
-from .storage import create_user, get_user, verify_password
+from .storage import create_user, get_user, get_user_hash, verify_password
 from .auth import create_access_token, decode_token
 
 app = FastAPI(title="PCS3643 - Login API", version="1.0.0")
 
+# front em 3000; backend fica em 8000 (sem conflito). CORS liberado:
 origins = ["http://localhost:3000"]
 app.add_middleware(
     CORSMiddleware,
@@ -29,9 +33,12 @@ def signup(body: SignupRequest):
 @app.post("/api/auth/login", response_model=LoginResponse)
 def login(body: LoginRequest):
     user = get_user(body.email)
-    if not user or not verify_password(body.password, user.hashed_password):
+    hashed = get_user_hash(body.email)
+    if not user or not hashed or not verify_password(body.password, hashed):
         raise HTTPException(status_code=401, detail="invalid credentials")
-    token = create_access_token({"sub": body.email, "name": user.name})
+
+    # JWT payload com username + email
+    token = create_access_token(username=user.name, email=user.email)
     return {"token": token}
 
 class TokenBody(BaseModel):
