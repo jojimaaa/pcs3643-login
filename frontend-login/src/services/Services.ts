@@ -16,7 +16,7 @@ export const tryLogin = async (data : ILoginFields) : Promise<ITryLoginResponse>
     const response = await api.post("/login", data);
     
     
-    let valores : ITryLoginResponse = {success : false, data : undefined}
+    const valores : ITryLoginResponse = {success : false, data : undefined}
     if (response.status == 200){
       const data = response.data;
 
