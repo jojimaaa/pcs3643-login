@@ -11,7 +11,8 @@ winget install -e --id PostgreSQL.PostgreSQL
 # Clonar o repositório e ir para a branch do backend
 git clone https://github.com/jojimaaa/pcs3643-login
 
-git checkout backend-login
+# Ir para o diretório do backend
+cd pcs3643-login/backend-login
 
 # Criar e ativar a venv + permitir scripts
 
@@ -26,8 +27,7 @@ py -m venv .venv
 py -m pip install --upgrade pip
 
 # Instalar dependências do backend
-py -m pip install fastapi "uvicorn[standard]" sqlmodel "psycopg[binary]" alembic python-dotenv `
-  "python-jose[cryptography]" "passlib[bcrypt]" pydantic[email] python-multipart watchfiles
+py -m pip install fastapi "uvicorn[standard]" sqlmodel "psycopg[binary]" alembic python-dotenv "python-jose[cryptography]" "passlib[bcrypt]" pydantic[email] python-multipart watchfiles
 
 # Preparar o PostgreSQL e a URL do banco
 # Abre o psql e cria a DB 
@@ -38,4 +38,4 @@ $env:DATABASE_URL = "postgresql+psycopg://postgres:postgres@localhost:5432/pcs36
 
 
 # Subir API
-py -m uvicorn backend-login.app.main:app --reload --port 8000
+py -m uvicorn app.main:app --reload --port 8000
