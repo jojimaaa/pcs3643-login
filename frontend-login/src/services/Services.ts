@@ -13,7 +13,7 @@ const api = axios.create({
 })
 
 export const tryLogin = async (data : ILoginFields) : Promise<ITryLoginResponse> => {
-    const response = await api.post("/login", data);
+    const response = await api.post("/api/auth/login", data);
     
     
     const valores : ITryLoginResponse = {success : false, data : undefined}
@@ -41,7 +41,7 @@ export const tryLogin = async (data : ILoginFields) : Promise<ITryLoginResponse>
 }
 
 export const trySignup = async (data : ISigninFields) : Promise<boolean> => {
-    const response = await api.post("/signup", data);
+    const response = await api.post("/api/auth/signup", data);
     if (response.status == 201){
         return true;
     }
